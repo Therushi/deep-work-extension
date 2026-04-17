@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Stay Focused</title>
+    <link rel="stylesheet" href="blocked.css" />
+  </head>
+  <body>
+    <div class="container">
+      <!-- Header -->
+      <div class="brand">🎯 Deep Work</div>
+
+      <!-- Blocked site name -->
+      <div class="site-badge">
+        <span id="siteName">This site</span>
+        <span class="badge-label">is blocked</span>
+      </div>
+
+      <!-- Countdown ring -->
+      <div class="ring-wrapper">
+        <svg class="ring" viewBox="0 0 200 200" width="220" height="220">
+          <circle class="ring-bg" cx="100" cy="100" r="88" />
+          <circle
+            id="ringProgress"
+            class="ring-progress"
+            cx="100"
+            cy="100"
+            r="88"
+          />
+        </svg>
+        <div class="ring-center">
+          <div class="ring-label" id="phaseLabel">FOCUS</div>
+          <div class="ring-time" id="timerDisplay">--:--</div>
+          <div class="ring-sub">until break</div>
+        </div>
+      </div>
+
+      <!-- Task label -->
+      <div id="taskBadge" class="task-badge hidden">
+        <span class="task-icon">📌</span>
+        <span id="taskText">Working on...</span>
+      </div>
+
+      <!-- Quote -->
+      <blockquote class="quote">
+        <p id="quoteText"></p>
+        <footer id="quoteAuthor"></footer>
+      </blockquote>
+
+      <!-- Emergency unlock -->
+      <div class="unlock-section">
+        <button id="unlockToggleBtn" class="unlock-trigger">
+          Need to unlock? ↓
+        </button>
+        <div id="unlockForm" class="unlock-form hidden">
+          <p class="unlock-hint" id="unlockHint">
+            Type the unlock phrase to end this session:
+          </p>
+          <div class="unlock-input-row">
+            <input
+              id="unlockInput"
+              type="text"
+              placeholder="Enter unlock phrase..."
+              autocomplete="off"
+              autocorrect="off"
+              spellcheck="false"
+            />
+            <button id="unlockSubmitBtn" class="unlock-btn">Unlock</button>
+          </div>
+          <p id="unlockError" class="unlock-error hidden">
+            Incorrect phrase. Try again.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="blocked.ts"></script>
+  </body>
+</html>

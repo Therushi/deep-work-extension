@@ -1,0 +1,20 @@
+{
+  "name": "deep-work-extension",
+  "version": "1.0.0",
+  "description": "Focus mode browser extension with Pomodoro timer and site blocking",
+  "author": "Rushikesh Dhanawade",
+  "license": "ISC",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "@types/chrome": "^0.0.268",
+    "canvas": "^3.2.3",
+    "typescript": "^5.4.5",
+    "vite": "^5.2.12",
+    "vite-plugin-web-extension": "^4.1.1"
+  }
+}

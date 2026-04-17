@@ -1,0 +1,213 @@
+/* src/blocked/blocked.css */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #0b0d14;
+  --surface: #1a1d27;
+  --surface2: #22263a;
+  --border: #2e3250;
+  --accent: #6c63ff;
+  --text: #e8eaf0;
+  --text-muted: #7a7f9a;
+  --danger: #ff5c5c;
+  --ring-r: 88;
+  --ring-circ: 553; /* 2π × 88 */
+}
+
+html, body {
+  height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 24px;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  max-width: 500px;
+  width: 100%;
+  text-align: center;
+}
+
+/* Brand */
+.brand { font-size: 14px; font-weight: 700; letter-spacing: 1px; color: var(--text-muted); text-transform: uppercase; }
+
+/* Site badge */
+.site-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 18px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 30px;
+  font-size: 15px;
+}
+#siteName { font-weight: 700; color: var(--text); }
+.badge-label { color: var(--text-muted); }
+
+/* Timer ring */
+.ring-wrapper {
+  position: relative;
+  width: 220px;
+  height: 220px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.ring { position: absolute; top: 0; left: 0; transform: rotate(-90deg); }
+.ring-bg { fill: none; stroke: var(--surface2); stroke-width: 10; }
+.ring-progress {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 10;
+  stroke-linecap: round;
+  stroke-dasharray: 553;
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset 1s linear;
+}
+
+.ring-center {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+.ring-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+.ring-time {
+  font-size: 44px;
+  font-weight: 700;
+  letter-spacing: -2px;
+  font-variant-numeric: tabular-nums;
+}
+.ring-sub { font-size: 11px; color: var(--text-muted); }
+
+/* Task badge */
+.task-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  border-radius: 8px;
+  font-size: 13px;
+  color: var(--text-muted);
+  max-width: 100%;
+}
+#taskText {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 380px;
+}
+
+/* Quote */
+.quote {
+  max-width: 420px;
+  border-left: none;
+  padding: 0 16px;
+}
+#quoteText {
+  font-size: 16px;
+  line-height: 1.65;
+  color: var(--text);
+  font-style: italic;
+  margin-bottom: 8px;
+}
+#quoteAuthor {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+#quoteAuthor::before { content: '— '; }
+
+/* Unlock section */
+.unlock-section { width: 100%; }
+
+.unlock-trigger {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 12px;
+  cursor: pointer;
+  padding: 6px 12px;
+  border-radius: 6px;
+  transition: color 0.15s;
+}
+.unlock-trigger:hover { color: var(--text); }
+
+.unlock-form {
+  margin-top: 12px;
+  padding: 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+.unlock-hint { font-size: 12px; color: var(--text-muted); margin-bottom: 10px; }
+
+.unlock-input-row {
+  display: flex;
+  gap: 8px;
+}
+.unlock-input-row input {
+  flex: 1;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  padding: 9px 12px;
+  color: var(--text);
+  font-size: 13px;
+  outline: none;
+  transition: border-color 0.15s;
+}
+.unlock-input-row input:focus { border-color: var(--accent); }
+.unlock-input-row input.shake { animation: shake 0.3s ease; border-color: var(--danger); }
+
+.unlock-btn {
+  padding: 9px 16px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: border-color 0.15s, background 0.15s;
+}
+.unlock-btn:hover { border-color: var(--danger); color: var(--danger); }
+
+.unlock-error {
+  margin-top: 8px;
+  font-size: 12px;
+  color: var(--danger);
+}
+
+@keyframes shake {
+  0%,100% { transform: translateX(0); }
+  20% { transform: translateX(-6px); }
+  40% { transform: translateX(6px); }
+  60% { transform: translateX(-4px); }
+  80% { transform: translateX(4px); }
+}
+
+.hidden { display: none !important; }

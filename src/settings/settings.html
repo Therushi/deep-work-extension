@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Deep Work — Settings</title>
+    <link rel="stylesheet" href="settings.css" />
+  </head>
+  <body>
+    <div class="page">
+      <header class="page-header">
+        <div class="logo">
+          <span>🎯</span>
+          <span>Deep Work</span>
+        </div>
+        <h1>Settings</h1>
+      </header>
+
+      <main>
+        <!-- ── Profiles ── -->
+        <section class="card" id="profilesSection">
+          <div class="card-header">
+            <h2>Block Profiles</h2>
+            <button id="addProfileBtn" class="btn-small">+ New Profile</button>
+          </div>
+
+          <div id="profilesList" class="profiles-list"></div>
+
+          <!-- Profile editor (hidden by default) -->
+          <div id="profileEditor" class="profile-editor hidden">
+            <div class="editor-row">
+              <input
+                id="profileNameInput"
+                type="text"
+                placeholder="Profile name (e.g. Work)"
+                maxlength="30"
+              />
+              <label class="toggle-label">
+                <span>Whitelist mode</span>
+                <input
+                  id="whitelistToggle"
+                  type="checkbox"
+                  class="toggle-input"
+                />
+                <span class="toggle-track"></span>
+              </label>
+            </div>
+            <p class="helper-text" id="whitelistHelp">
+              Block mode: blocks the listed sites.<br />
+              Whitelist mode: blocks everything <em>except</em> the listed
+              sites.
+            </p>
+            <div class="site-input-row">
+              <input
+                id="siteInput"
+                type="text"
+                placeholder="e.g. reddit.com"
+                autocomplete="off"
+              />
+              <button id="addSiteBtn" class="btn-small">Add</button>
+            </div>
+            <ul id="siteList" class="site-list"></ul>
+            <div class="editor-actions">
+              <button id="saveProfileBtn" class="btn btn-primary">
+                Save Profile
+              </button>
+              <button id="cancelProfileBtn" class="btn btn-ghost">
+                Cancel
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- ── Pomodoro ── -->
+        <section class="card">
+          <div class="card-header"><h2>Pomodoro Timer</h2></div>
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="workMins">Work (minutes)</label>
+              <input id="workMins" type="number" min="1" max="120" />
+            </div>
+            <div class="form-group">
+              <label for="shortBreakMins">Short break (minutes)</label>
+              <input id="shortBreakMins" type="number" min="1" max="60" />
+            </div>
+            <div class="form-group">
+              <label for="longBreakMins">Long break (minutes)</label>
+              <input id="longBreakMins" type="number" min="1" max="120" />
+            </div>
+            <div class="form-group">
+              <label for="cycles">Cycles before long break</label>
+              <input id="cycles" type="number" min="1" max="10" />
+            </div>
+          </div>
+          <label class="toggle-label full-width">
+            <span>Auto-start next phase</span>
+            <input id="autoStartToggle" type="checkbox" class="toggle-input" />
+            <span class="toggle-track"></span>
+          </label>
+        </section>
+
+        <!-- ── Schedule ── -->
+        <section class="card">
+          <div class="card-header">
+            <h2>Scheduled Auto-Start</h2>
+            <label class="toggle-label">
+              <input id="scheduleToggle" type="checkbox" class="toggle-input" />
+              <span class="toggle-track"></span>
+            </label>
+          </div>
+          <div id="scheduleFields" class="hidden">
+            <div class="form-group">
+              <label for="scheduleTime">Start time</label>
+              <input id="scheduleTime" type="time" />
+            </div>
+            <div class="day-picker">
+              <label class="day-label"
+                ><input type="checkbox" value="mon" /> Mon</label
+              >
+              <label class="day-label"
+                ><input type="checkbox" value="tue" /> Tue</label
+              >
+              <label class="day-label"
+                ><input type="checkbox" value="wed" /> Wed</label
+              >
+              <label class="day-label"
+                ><input type="checkbox" value="thu" /> Thu</label
+              >
+              <label class="day-label"
+                ><input type="checkbox" value="fri" /> Fri</label
+              >
+              <label class="day-label"
+                ><input type="checkbox" value="sat" /> Sat</label
+              >
+              <label class="day-label"
+                ><input type="checkbox" value="sun" /> Sun</label
+              >
+            </div>
+          </div>
+        </section>
+
+        <!-- ── Security ── -->
+        <section class="card">
+          <div class="card-header"><h2>Emergency Unlock</h2></div>
+          <p class="section-desc">
+            Type this phrase on the blocked page to immediately end a session.
+          </p>
+          <div class="form-group">
+            <label for="unlockPhrase">Unlock phrase</label>
+            <input
+              id="unlockPhrase"
+              type="text"
+              maxlength="80"
+              placeholder="I choose to break focus"
+            />
+          </div>
+        </section>
+
+        <!-- ── Notifications ── -->
+        <section class="card">
+          <div class="card-header">
+            <h2>Notifications</h2>
+            <label class="toggle-label">
+              <input
+                id="notificationsToggle"
+                type="checkbox"
+                class="toggle-input"
+              />
+              <span class="toggle-track"></span>
+            </label>
+          </div>
+          <p class="section-desc">
+            Desktop alerts when sessions start and end.
+          </p>
+        </section>
+
+        <!-- ── Stats ── -->
+        <section class="card">
+          <div class="card-header"><h2>Today's Stats</h2></div>
+          <div class="stats-grid">
+            <div class="stat-card">
+              <span id="statsPomodoros" class="stat-big">0</span>
+              <span class="stat-label">Pomodoros</span>
+            </div>
+            <div class="stat-card">
+              <span id="statsMinutes" class="stat-big">0</span>
+              <span class="stat-label">Focus minutes</span>
+            </div>
+          </div>
+        </section>
+
+        <div class="save-row">
+          <button id="saveAllBtn" class="btn btn-primary btn-full">
+            Save Settings
+          </button>
+          <p id="saveMsg" class="save-msg hidden">Settings saved.</p>
+        </div>
+      </main>
+    </div>
+
+    <script type="module" src="settings.ts"></script>
+  </body>
+</html>
