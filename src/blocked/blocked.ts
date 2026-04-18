@@ -1,6 +1,6 @@
 // src/blocked/blocked.ts
 import type { SessionState, AppSettings } from "../shared/types.js";
-import { STORAGE_KEYS } from "../shared/constants.js";
+import { STORAGE_KEYS, DEFAULT_SETTINGS } from "../shared/constants.js";
 import quotes from "../shared/quotes.json";
 
 const RING_CIRCUMFERENCE = 553; // 2π × 88
@@ -93,41 +93,55 @@ function updateTimer(state: SessionState, settings: AppSettings): void {
   }
 }
 
-// ─── Poll storage for live updates ───────────────────────────────────────────
-async function pollState(): Promise<void> {
+// ─── State cache ─────────────────────────────────────────────────────────────
+let cachedState: SessionState | undefined;
+let cachedSettings: AppSettings | undefined;
+
+async function loadAndRender(): Promise<void> {
   const result = await chrome.storage.local.get([
     STORAGE_KEYS.SESSION,
     STORAGE_KEYS.SETTINGS,
   ]);
-  const state = result[STORAGE_KEYS.SESSION] as SessionState | undefined;
-  const settings = result[STORAGE_KEYS.SETTINGS] as AppSettings | undefined;
+  cachedState = result[STORAGE_KEYS.SESSION] as SessionState | undefined;
+  cachedSettings = (result[STORAGE_KEYS.SETTINGS] as AppSettings | undefined) ?? DEFAULT_SETTINGS;
 
-  if (state && settings) {
-    updateTimer(state, settings);
+  if (cachedState) {
+    updateTimer(cachedState, cachedSettings);
 
-    // Session ended — redirect away from blocked page
-    if (state.phase !== "work") {
+    if (cachedState.phase !== "work") {
       setTimeout(() => {
         window.location.href = blockedSite
           ? `https://${blockedSite}`
           : "chrome://newtab";
       }, 800);
     }
+
+    if (cachedSettings.emergencyUnlockPhrase) {
+      unlockHint.textContent = `Type your unlock phrase to end this session:`;
+    }
   }
 }
 
-// Kick off — also set unlock hint after getting settings
-chrome.storage.local.get(STORAGE_KEYS.SETTINGS).then((result) => {
-  const settings = result[STORAGE_KEYS.SETTINGS] as AppSettings | undefined;
-  if (settings?.emergencyUnlockPhrase) {
-    unlockHint.textContent = `Type your unlock phrase to end this session:`;
+// Re-render every second using cached endTimestamp (no storage read needed)
+function tickRender(): void {
+  if (cachedState) {
+    updateTimer(cachedState, cachedSettings ?? DEFAULT_SETTINGS);
+  }
+}
+
+// React to _tick written by SW — also re-reads state in case phase changed
+chrome.storage.onChanged.addListener((changes, area) => {
+  if (area !== "local") return;
+  if (changes["_tick"] || changes[STORAGE_KEYS.SESSION]) {
+    loadAndRender().catch(console.error);
   }
 });
 
-pollState().catch(console.error);
-const tickInterval = setInterval(() => pollState().catch(console.error), 1000);
+// Initial load
+loadAndRender().catch(console.error);
 
-// Stop polling if user navigates away
+// Local tick so the countdown is smooth even when SW is idle
+const tickInterval = setInterval(tickRender, 1000);
 window.addEventListener("beforeunload", () => clearInterval(tickInterval));
 
 // ─── Emergency unlock ─────────────────────────────────────────────────────────

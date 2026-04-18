@@ -5,12 +5,18 @@ import webExtension from "vite-plugin-web-extension";
 export default defineConfig({
   plugins: [
     webExtension({
-      manifest: "src/manifest.json",
+      manifest: "manifest.json",
       additionalInputs: ["src/blocked/blocked.html"],
+      browser: "chrome",
+      webExtConfig: {
+        target: "chromium",
+        chromiumBinary:
+          "/Applications/Brave Browser.app/Contents/MacOS/Brave Browser",
+      },
     }),
   ],
   build: {
     outDir: "dist",
-    emptyOutDir: true,
+    emptyOutDir: false,
   },
 });
